@@ -8,7 +8,7 @@ jobs:
       - uses: philips-labs/tern-action@v1.1.0
         id: scan
         with:
-          image: alpine:latest
+          image: localbuild/testimage:latest
           format: yaml
           output: alpine.yaml
       - uses: actions/upload-artifact@v2
