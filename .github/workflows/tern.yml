@@ -1,4 +1,4 @@
-name: severity
+name: ci
 
 on:
   push:
@@ -16,12 +16,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: 0.0.1.release
-          username: KarthikShetty5
-          password: ${{ secrets.DOCKER }}
+          tags: user/app:latest
       -
         name: Scan for vulnerabilities
         uses: crazy-max/ghaction-container-scan@v3
         with:
-          image: localbuild/testimage:latest
-          severity_threshold: HIGH
+          image: user/app:latest
