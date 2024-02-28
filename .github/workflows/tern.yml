@@ -1,30 +1,25 @@
-name: build
-on: 
+name: severity
+
+on:
   push:
-  issue_comment:
-    types: [created, edited]
 
 jobs:
   scan:
-    if: contains(github.event.comment.body, '/scan')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v2
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Build
+        uses: docker/build-push-action@v4
         with:
-          github-token: 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
-          script: |
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `🚀 Running tern action for default output.`
-            })
-      - uses: philips-labs/tern-action@v1.1.0
-        id: scan
+          context: .
+          push: true
+          tags: karthikshetty555/python-flask:0.0.1.RELEASE
+      -
+        name: Scan for vulnerabilities
+        uses: crazy-max/ghaction-container-scan@v3
         with:
-          image: localbuild/testimage:latest
-          format: json
-      - uses: actions/upload-artifact@v2
-        with:
-          name: tern
-          path: ${{ steps.scan.outputs.file}}
+          image: karthikshetty555/python-flask:0.0.1.RELEASE
+          severity_threshold: HIGH

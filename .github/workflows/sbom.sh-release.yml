@@ -16,9 +16,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: localbuild/testimage:latest
+          tags: karthikshetty555/python-flask:0.0.1.RELEASE
       -
         name: Scan for vulnerabilities
         uses: crazy-max/ghaction-container-scan@v3
         with:
-          image: localbuild/testimage:latest
+          image: karthikshetty555/python-flask:0.0.1.RELEASE

@@ -6,11 +6,11 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Build the Container image
-        run: docker build . --file Dockerfile --tag localbuild/testimage:latest
+        run: docker build . --file Dockerfile --tag karthikshetty555/python-flask:0.0.1.RELEASE
       - uses: anchore/scan-action@v3
         id: scan
         with:
-          image: localbuild/testimage:latest
+          image: karthikshetty555/python-flask:0.0.1.RELEASE
           fail-build: false      
       - name: Generate SBOM
         id: sbom_generation
