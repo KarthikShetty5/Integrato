@@ -1,4 +1,4 @@
-name: trivy
+name: Build SBOM
 on: [push]
 jobs:
   build:

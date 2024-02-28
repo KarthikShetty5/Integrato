@@ -1,24 +1,17 @@
-name: ci
-
-on:
-  push:
+name: tern
+on: [push]
 
 jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Build
-        uses: docker/build-push-action@v4
+      - uses: philips-labs/tern-action@v1.1.0
+        id: scan
         with:
-          context: .
-          push: true
-          tags: user/app:latest
-      -
-        name: Scan for vulnerabilities
-        uses: crazy-max/ghaction-container-scan@v3
+          image: alpine:latest
+          format: yaml
+          output: alpine.yaml
+      - uses: actions/upload-artifact@v2
         with:
-          image: user/app:latest
+          name: tern 
+          path: ${{ steps.scan.outputs.file }} 
