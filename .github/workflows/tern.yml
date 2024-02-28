@@ -17,7 +17,7 @@ jobs:
           context: .
           push: true
           tags: 0.0.1.release
-          username: ${{ github.actor }}
+          username: KarthikShetty5
           password: ${{ secrets.DOCKER }}
       -
         name: Scan for vulnerabilities
