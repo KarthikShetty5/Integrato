@@ -5,10 +5,13 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Build the container image
+        run: docker build . --file Dockerfile --tag localbuild/testimage:latest
       - uses: philips-labs/tern-action@v1.1.0
         id: scan
         with:
-          image: alpine:latest
+          image: localbuild/testimage:latest
           format: yaml
           output: alpine.yaml
       - uses: actions/upload-artifact@v2
