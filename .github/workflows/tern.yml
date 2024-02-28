@@ -1,28 +1,20 @@
-name: scan tern
-
-on:
-  push:
+name: tern
+on: [push]
 
 jobs:
-  tern:
+  scan:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Fetch tern
-        run: git clone https://github.com/tern-tools/tern.git
-      - name: Build tern container
-        run: docker build . --file tern/Dockerfile --tag ternd
-      - name: Run scan debian:buster
-        run: |
-          mkdir -p ${{ github.workspace }}/artifact
-          cd tern
-          ./docker_run.sh workdir ternd "report -f json -i debian:buster" > ${{ github.workspace }}/artifact/debian.txt
-      - name: Run scan alpine 
-        run: |
-          mkdir -p ${{ github.workspace }}/artifact
-          cd tern
-          ./docker_run.sh workdir ternd "report -f json -i alpine:3.10.4" > ${{ github.workspace }}/artifact/alpine.txt
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Build the container image
+        run: docker build . --file Dockerfile --tag localbuild/testimage:latest
+      - uses: philips-labs/tern-action@v1.1.0
+        id: scan
+        with:
+          image: localbuild/testimage:latest
+          format: table
       - uses: actions/upload-artifact@v2
         with:
-          name: tern-output
-          path: ${{ github.workspace }}/artifact
+          image: localbuild/testimage:latest
+          name: tern 
+          output-format: table
