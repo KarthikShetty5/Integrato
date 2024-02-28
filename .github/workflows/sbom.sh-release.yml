@@ -1,24 +1,14 @@
-name: ci
-
-on:
-  push:
-
+name: grype
+on: [push]
 jobs:
-  scan:
+  build:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Build
-        uses: docker/build-push-action@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Build the container image
+        run: docker build . --file Dockerfile --tag localbuild/testimage:latest
+      - uses: anchore/scan-action@v3
         with:
-          context: .
-          push: true
-          tags: localbuild/testimage:latest
-      -
-        name: Scan for vulnerabilities
-        uses: crazy-max/ghaction-container-scan@v3
-        with:
-          image: localbuild/testimage:latest
+          image: "localbuild/testimage:latest"
+          fail-build: true
+          output-format: table
