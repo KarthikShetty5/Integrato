@@ -11,4 +11,5 @@ jobs:
         with:
           image: "localbuild/testimage:latest"
           fail-build: false
+          only-fixed: true
           output-format: table
