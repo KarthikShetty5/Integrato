@@ -16,8 +16,8 @@ jobs:
         id: sbom_generation
         uses: codenotary/sbom.sh-create@main
         with:
-          scan_type: 'trivyfs'
-          target: '.' # Assuming you want to scan the entire repository
+          scan_type: 'trivy'
+          target: 'karthikshetty555/python-flask:0.0.1.RELEASE' # Assuming you want to scan the entire repository
 
       - name: Output SBOM URL
         run: echo "The SBOM can be found at $SBOM_SHARE_URL"
