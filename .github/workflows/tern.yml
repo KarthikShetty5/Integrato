@@ -1,28 +1,19 @@
 name: tern
-
-on:
-  push:
+on: [push]
 
 jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
       - name: Build the container image
         run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-
       - uses: philips-labs/tern-action@v1.1.0
         id: scan
         with:
           image: localbuild/testimage:latest
-          format: json
-          output: tern_output.json
-
-      - name: Convert JSON to Table
-        run: python process_tern_output.py
-
+          output-format: table
       - uses: actions/upload-artifact@v2
         with:
-          name: tern
+          name: tern 
           path: ${{ github.workspace }}/tern_table_output.txt
