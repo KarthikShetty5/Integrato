@@ -1,4 +1,4 @@
-name: Sample with SBOM Generation using Micro
+name: Sample with Microsoft SBOM Generation
 
 on: [push]
 
@@ -8,22 +8,29 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        dotnet-version: 6.0.x
+        python-version: '3.x' # specify the Python version you're using
 
-    - name: Build
-      run: dotnet build main.py --output buildOutput
-      
-    - name: Generate SBOM
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # If you have a requirements.txt file
+        
+    - name: Compile Python files
+      run: python -m compileall H_P_E  # Assuming 'hpe' is your project folder
+    
+    - name: Download SBOM tool
       run: |
         curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
         chmod +x $RUNNER_TEMP/sbom-tool
-        $RUNNER_TEMP/sbom-tool generate -b ./buildOutput -bc . -pn Test -pv 1.0.0 -ps MyCompany -nsb https://sbom.mycompany.com -V Verbose
+    
+    - name: Generate SBOM
+      run: $RUNNER_TEMP/sbom-tool generate -b ./__pycache__ -bc . -pn Test -pv 1.0.0 -ps MyCompany -nsb https://sbom.mycompany.com -V Verbose
 
-    - name: Upload Build Output Artifact
-      uses: actions/upload-artifact@v3.1.0
+    - name: Upload SBOM
+      uses: actions/upload-artifact@v3
       with:
-        name: build-output
-        path: buildOutput
+        name: sbom-output
+        path: sbom.json  # Adjust this based on where the SBOM is generated
