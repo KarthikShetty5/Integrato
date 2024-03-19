@@ -15,10 +15,10 @@ jobs:
         dotnet-version: '6.0.x' # specify the .NET version you're using
 
     - name: Restore dependencies
-      run: dotnet restore H_P_E/ # Adjust path to your project file
+      run: dotnet restore /H_P_E # Adjust path to your project file
 
     - name: Build
-      run: dotnet build H_P_E/ --output buildOutput # Adjust path to your project file
+      run: dotnet build /H_P_E --output buildOutput # Adjust path to your project file
       
     - name: Download SBOM tool
       run: |
