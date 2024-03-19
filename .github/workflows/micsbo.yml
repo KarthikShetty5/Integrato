@@ -1,13 +1,11 @@
-name: Sample with SBOM generation
+name: SBOM Generation with Microsoft SBOM Tool
 
 on: 
   workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
