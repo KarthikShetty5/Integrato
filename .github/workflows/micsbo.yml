@@ -1,7 +1,6 @@
 name: SBOM Generation with Microsoft SBOM Tool
 
-on: 
-  workflow_dispatch:
+on: [push]
 
 jobs:
   build:
