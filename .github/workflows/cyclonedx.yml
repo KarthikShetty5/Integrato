@@ -1,7 +1,8 @@
 name: Sample with Microsoft SBOM Generation
 
-on: 
-  workflow_dispatch:
+on:
+    push:
+      branches: [master]
 
 jobs:
   build:
