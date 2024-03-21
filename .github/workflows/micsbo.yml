@@ -12,18 +12,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'  
-
     - name: Install Microsoft SBOM Tool
       run: |
-        pip install MicrosoftSBOMTool  
+        brew install sbom-tool  # Adjust this command based on the actual installation command for the Microsoft SBOM tool
 
     - name: Generate SBOM
       run: |
-        sbom generate --output sbom.xml  
+        sbom-tool generate --output sbom.xml  # Adjust this command based on how you invoke the SBOM generation tool
 
     - name: Upload SBOM Artifact
       uses: actions/upload-artifact@v3.1.0
