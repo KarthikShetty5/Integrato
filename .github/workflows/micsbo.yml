@@ -1,25 +1,31 @@
-name: Microsoft SBOM
+name: Generate SBOM and Upload Artifact
 
-on:
-  push:
-    branches: [master]
+on: 
+  workflow_dispatch:
 
 jobs:
-  build:
+  generate-sbom:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        dotnet-version: 6.0.x
+        python-version: '3.x'  # Specify your Python version here
 
-    - name: Build
-      run: dotnet build Sample.sln --output buildOutput -p:SomeParameter=argument_value ./requirements.txt
+    - name: Install Microsoft SBOM Tool
+      run: |
+        pip install MicrosoftSBOMTool  # Adjust the installation command based on how the SBOM tool is installed
 
-    - name: Upload a Build Artifact
+    - name: Generate SBOM
+      run: |
+        sbom generate --output sbom.xml  # Adjust this command based on how you invoke the SBOM generation tool
+
+    - name: Upload SBOM Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
-        path: buildOutput
+        name: sbom  # Name of the artifact
+        path: sbom.xml  # Path to the generated SBOM file
