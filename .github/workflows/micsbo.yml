@@ -9,12 +9,18 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    container:
+      image: ubuntu:latest
+
     steps:
-    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        apt-get update
+        apt-get install -y curl
 
     - name: Install Microsoft SBOM Tool
       run: |
-        brew install sbom-tool  # Adjust this command based on the actual installation command for the Microsoft SBOM tool
+        curl -sSL https://example.com/sbom-tool-install-script.sh | bash  # Replace the URL with the actual download link or installation script provided by Microsoft
 
     - name: Generate SBOM
       run: |
