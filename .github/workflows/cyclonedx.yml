@@ -1,4 +1,4 @@
-name: Sample with Microsoft SBOM Generation
+name: Python SBOM using Cyclonedx
 
 on:
     push:
@@ -14,9 +14,8 @@ jobs:
       uses: CycloneDX/gh-python-generate-sbom@v2
       with:
         input: ./requirements.txt
-        output: ./bom.csv  # Change the output file extension to .csv
-        format: table      # Specify the format as "table" for tabular output
-
+        output: ./bom.json
+        format: json
 
     
 

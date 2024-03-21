@@ -1,35 +1,25 @@
-name: Sample with Microsoft SBOM Generation
+name: Microsoft SBOM
 
-on: 
-  workflow_dispatch:
+on:
+  push:
+    branches: [master]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Set up .NET
+    - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: '6.0.x' # specify the .NET version you're using
-
-    - name: Restore dependencies
-      run: dotnet restore /H_P_E # Adjust path to your project file
+        dotnet-version: 6.0.x
 
     - name: Build
-      run: dotnet build /H_P_E --output buildOutput # Adjust path to your project file
-      
-    - name: Download SBOM tool
-      run: |
-        curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
-        chmod +x $RUNNER_TEMP/sbom-tool
-    
-    - name: Generate SBOM
-      run: $RUNNER_TEMP/sbom-tool generate -b ./buildOutput -bc . -pn Test -pv 1.0.0 -ps MyCompany -nsb https://sbom.mycompany.com -V Verbose
+      run: dotnet build Sample.sln --output buildOutput
 
-    - name: Upload SBOM
-      uses: actions/upload-artifact@v3
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
       with:
-        name: sbom-output
-        path: sbom.json  # Adjust this based on where the SBOM is generated
+        path: buildOutput
