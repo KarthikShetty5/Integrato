@@ -1,7 +1,8 @@
 name: Generate SBOM and Upload Artifact
 
-on: 
-  workflow_dispatch:
+on:
+  push:
+    branches: [master]
 
 jobs:
   generate-sbom:
