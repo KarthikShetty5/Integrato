@@ -1,0 +1,20 @@
+name: Sample with Microsoft SBOM Generation
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Generate Python SBOM
+      uses: CycloneDX/gh-python-generate-sbom@v2
+      with:
+        input: ./requirements.txt
+        output: ./bom.json
+        format: json
+
+    
+
