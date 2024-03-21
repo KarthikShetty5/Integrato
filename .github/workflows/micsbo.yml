@@ -21,6 +21,9 @@ jobs:
         id: spdx-builder
         uses: philips-software/spdx-action@v0.9.1.1
         with:
-          project: H_P_E
+          project: my-project
           mode: ort
-          format: json
+      - uses: actions/upload-artifact@v2
+        with:
+          name: licenses
+          path: ${{ steps.spdx-builder.outputs.spdx-file }}
