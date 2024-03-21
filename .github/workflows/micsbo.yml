@@ -20,11 +20,11 @@ jobs:
 
     - name: Install Microsoft SBOM Tool
       run: |
-        curl -sSL https://example.com/sbom-tool-install-script.sh | bash  # Replace the URL with the actual download link or installation script provided by Microsoft
+        curl -sSL https://example.com/sbom-tool-install-script.sh | bash  
 
     - name: Generate SBOM
       run: |
-        sbom-tool generate --output sbom.xml  # Adjust this command based on how you invoke the SBOM generation tool
+        sbom-tool generate --output sbom.xml  
 
     - name: Upload SBOM Artifact
       uses: actions/upload-artifact@v3.1.0
