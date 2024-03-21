@@ -21,9 +21,6 @@ jobs:
         id: spdx-builder
         uses: philips-software/spdx-action@v0.9.1.1
         with:
-          project: my-project
+          project: H_P_E
           mode: ort
-      with:
-        input: ./requirements.txt
-        output: ./bom.json
-        format: json
+          format: json
