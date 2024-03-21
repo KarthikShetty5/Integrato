@@ -1,4 +1,4 @@
-name: Generate SBOM and Upload Artifact
+name: SPDX
 
 on:
   push:
