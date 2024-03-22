@@ -1,4 +1,4 @@
-name: Build SBOM 
+name: SBOM vulnerability Trivy
 on: [push]
 jobs:
   build:

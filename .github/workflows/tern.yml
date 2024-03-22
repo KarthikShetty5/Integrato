@@ -1,4 +1,4 @@
-name: tern
+name: SBOM using Tern
 on: [push]
 
 jobs:

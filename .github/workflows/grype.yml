@@ -1,4 +1,4 @@
-name: grype
+name: SBOM vulnerability Grype
 on: [push]
 jobs:
   build:
