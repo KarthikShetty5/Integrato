@@ -1,4 +1,4 @@
-name: Python SBOM using Cyclonedx
+name: SBOM using Cyclonedx
 
 on:
     push:
