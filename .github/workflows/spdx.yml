@@ -22,9 +22,6 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore Sample.sln
-
     - name: Build
       run: dotnet build Sample.sln --configuration Release
 
