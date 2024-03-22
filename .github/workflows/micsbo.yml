@@ -23,7 +23,3 @@ jobs:
         with:
           project: my-project
           mode: ort
-      - uses: actions/upload-artifact@v2
-        with:
-          name: licenses
-          path: ${{ steps.spdx-builder.outputs.spdx-file }}
