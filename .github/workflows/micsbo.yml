@@ -1,25 +1,31 @@
-name: SPDX
 
-on:
-  push:
-    branches: [master]
+name: SBOM upload
+
+on: 
+  workflow_dispatch:
+  push: 
+    branches: ["main"]
 
 jobs:
-  generate-sbom:
+  SBOM-upload:
 
     runs-on: ubuntu-latest
-
-    container:
-      image: ubuntu:latest
-
+    permissions: 
+      id-token: write
+      contents: write
+      
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '11.0.13'
-      - name: Create spdx-file
-        id: spdx-builder
-        uses: philips-software/spdx-action@v0.9.1.1
-        with:
-          project: my-project
-          mode: ort
+    - uses: actions/checkout@v3
+    - name: Generate SBOM
+      run: | 
+        curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
+        chmod +x $RUNNER_TEMP/sbom-tool
+        $RUNNER_TEMP/sbom-tool generate -b . -bc . -pn ${{ github.repository }} -pv 1.0.0 -ps OwnerName -nsb https://sbom.mycompany.com -V Verbose
+    - uses: actions/upload-artifact@v3
+      with:
+        name: sbom
+        path: _manifest/spdx_2.2
+    - name: SBOM upload 
+      uses: jhutchings1/spdx-to-dependency-graph-action@v0.0.1
+      with:
+        filePath: "_manifest/spdx_2.2/"
