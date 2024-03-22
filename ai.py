@@ -25,11 +25,9 @@ if __name__ == "__main__":
         with open(code_file_path, 'r', encoding='utf-8') as file:
             code_snippet = file.read()
 
-            # Parse the code snippet using AST to remove comments and docstrings
             parsed_code = ast.parse(code_snippet)
             clean_code_snippet = ast.get_source_segment(parsed_code)
 
-            # Assuming you have a function to detect vulnerabilities using AI
             if detect_vulnerabilities_with_ai(clean_code_snippet):
                 print("Vulnerability detected!")
             else:
