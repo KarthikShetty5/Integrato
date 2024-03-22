@@ -1,31 +1,59 @@
-name: Sample with SBOM generation
+name: Sample Workflow
 
-on: 
-  workflow_dispatch:
-  push: 
-        branches: ["master"]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore Sample.sln
+
     - name: Build
-      run: dotnet build Sample.sln --output buildOutput
-      
+      run: dotnet build Sample.sln --configuration Release
+
+    - name: Test .NET project
+      run: dotnet test SampleDotNetApp/SampleDotNetApp.csproj --configuration Release
+
+    - name: Install Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Python dependencies
+      run: pip install -r ./requirements.txt
+
+    - name: Run Python script
+      run: python PythonScripts/your_script.py
+
     - name: Generate SBOM
       run: |
         curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
         chmod +x $RUNNER_TEMP/sbom-tool
-        $RUNNER_TEMP/sbom-tool generate -b ./buildOutput -bc . -pn Test -pv 1.0.0 -ps MyCompany -nsb https://sbom.mycompany.com -V Verbose
+        $RUNNER_TEMP/sbom-tool generate -b ./SampleDotNetApp/bin/Release -bc . -pn Test -pv 1.0.0 -ps MyCompany -nsb https://sbom.mycompany.com -V Verbose
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
-        path: buildOutput
+        path: SampleDotNetApp/bin/Release
+
+    - name: Upload Python script
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        path: ./main.py
