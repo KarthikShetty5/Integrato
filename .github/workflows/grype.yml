@@ -10,6 +10,5 @@ jobs:
       - uses: anchore/scan-action@v3
         with:
           image: "localbuild/testimage:latest"
-          fail-build: false
-          only-fixed: true
+          fail-build: true
           output-format: table
