@@ -12,7 +12,7 @@ jobs:
         id: scan
         with:
           image: localbuild/testimage:latest
-          output-format: table
+          output: table
       - uses: actions/upload-artifact@v2
         with:
           name: tern 
