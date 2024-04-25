@@ -1,0 +1,69 @@
+pip install torch
+
+-------Execution Policy-------------
+@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+-------Choco Upgrade----------------
+choco upgrade chocolatey
+
+wsl --status
+wsl --update
+wsl --set-default-version 2
+
+---------------Docker-----------------------
+docker version
+docker images
+clsx
+
+
+-----------Docker working---------------
+docker build -t karthikshetty555/python-flask:0.0.1.RELEASE .
+docker container run -d -p 3000:3000 karthikshetty555/python-flask:0.0.1.RELEASE
+docker container stop <container-id>
+docker logs <container-id>
+docker stats <container-id>
+cat requirements.txt
+docker port <container-id>
+docker ps
+
+-------------Syft-----------------------
+pip install syft[udacity]
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr -useb https://raw.githubusercontent.com/anchore/syft/main/install.sh -OutFile install.sh; .\install.sh -b /usr/local/bin; rm install.sh
+
+choco install syft -y
+
+
+----------------SBOM Generator---------------
+docker save -o image.tar karthikshetty555/python-flask:0.0.1.RELEASE
+syft image.tar
+syft image.tar -o syft-text
+syft hpe.tar -o spdx-json
+syft -o json karthikshetty555/python-flask:0.0.1.RELEASE > output.json
+
+-----------Grype--------------
+choco install grype
+
+cat output.json | grype
+grype output.json
+
+grype <image-name>:<tag> -o json
+
+
+
+
+
+
+
+
+
+
+
+
+npm install -g @cyclonedx/cdxgen
+cdxgen -o bom.json
+cdxgen -t c -o bom.json
+cdxgen -p
+cyclonedx-py requirements
